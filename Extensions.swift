@@ -19,6 +19,15 @@ extension UIColor {
             alpha: alpha
         )
     }
+    
+    class func randomColorWithAlpha(alpha: CGFloat = 1.0) -> UIColor {
+        return UIColor(
+            red: CGFloat(arc4random_uniform(255)) / 255.0,
+            green: CGFloat(arc4random_uniform(255)) / 255.0,
+            blue: CGFloat(arc4random_uniform(255)) / 255.0,
+            alpha: alpha
+        )
+    }
 }
 
 extension UIImage {

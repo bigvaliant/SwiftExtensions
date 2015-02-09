@@ -1,6 +1,32 @@
 import UIKit
 
+// Helpers
+
 let hairline: CGFloat = 1 / UIScreen.mainScreen().scale
+
+struct ActivityManager {
+    static var activitiesCount = 0
+    
+    static func addActivity() {
+        if activitiesCount == 0 {UIApplication.sharedApplication().networkActivityIndicatorVisible = true}
+        activitiesCount++
+    }
+    
+    static func removeActivity() {
+        if activitiesCount > 0 {
+            activitiesCount--
+            if activitiesCount == 0 {UIApplication.sharedApplication().networkActivityIndicatorVisible = false}
+        }
+    }
+}
+
+func executeAfter(delay: NSTimeInterval, closure: () -> ()) {
+    if delay > 0 {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
+    } else {
+        closure()
+    }
+}
 
 // Extensions
 
@@ -35,14 +61,14 @@ extension UIImage {
         var pixelData = CGDataProviderCopyData(CGImageGetDataProvider(self.CGImage))
         var data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
         
-        var pixelInfo: Int = ((Int(self.size.width * scale) * Int(point.y * scale)) + Int(point.x * scale)) * 4
+        var pixelInfo: Int = ((Int(self.size.width) * Int(point.y)) + Int(point.x)) * 4
         
-        var r = CGFloat(data[pixelInfo])
-        var g = CGFloat(data[pixelInfo + 1])
-        var b = CGFloat(data[pixelInfo + 2])
-        var a = CGFloat(data[pixelInfo + 3])
+        var r = CGFloat(data[pixelInfo]) / 255.0
+        var g = CGFloat(data[pixelInfo+1]) / 255.0
+        var b = CGFloat(data[pixelInfo+2]) / 255.0
+        var a = CGFloat(data[pixelInfo+3]) / 255.0
         
-        return (r / 255.0, g / 255.0, b / 255.0, a / 255.0)
+        return (r, g, b, a)
     }
     
     class func imageWithColor(color: UIColor) -> UIImage {
@@ -57,15 +83,15 @@ extension UIImage {
         
         return img
     }
-
+    
     func scaledToWidth(width: CGFloat) -> UIImage {
         let scale = width / self.size.width
         let height = self.size.height * scale
         return scaledToSize(CGSize(width: width, height: height))
     }
-
+    
     func scaledToSize(size: CGSize) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.mainScreen().scale)
         self.drawInRect(CGRect(origin: CGPoint(x: 0, y: 0), size: size))
         let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -91,7 +117,7 @@ extension UIImage {
             else if widthFactor < heightFactor {thumbnailPoint.x = (size.width - scaledWidth) * 0.5}
         }
         
-        UIGraphicsBeginImageContext(size) // this will crop
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.mainScreen().scale)
         let thumbnailRect = CGRect(origin: thumbnailPoint, size: CGSize(width: scaledWidth, height: scaledHeight))
         self.drawInRect(thumbnailRect)
         let scaledCroppedImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -114,6 +140,14 @@ extension UILabel {
         rect.size.width = width
         rect.size.height = ceil(rect.size.height)
         frame = rect
+    }
+    
+    func shrinkFontToFitTextToFrame() {
+        if text != nil {
+            while font.sizeOfString(text!, constrainedToWidth: bounds.size.width).height > bounds.size.height {
+                font = UIFont(name: font.fontName, size: font.pointSize - 1)
+            }
+        }
     }
 }
 

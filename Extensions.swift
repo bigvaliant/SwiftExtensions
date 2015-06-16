@@ -388,6 +388,12 @@ extension UIView {
         if right {x += 1 - hairline}
     }
     
+    func removeAllSubviews() {
+        for subview in subviews {
+            subview.removeFromSuperview()
+        }
+    }
+    
     func getScreenshot() -> UIImage {
         UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.mainScreen().scale)
         self.drawViewHierarchyInRect(bounds, afterScreenUpdates: false)

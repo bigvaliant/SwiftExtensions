@@ -45,6 +45,13 @@ func executeAfter(delay: NSTimeInterval, closure: () -> ()) {
     }
 }
 
+func executeOnMainThread(closure: () -> ()) {
+    dispatch_async(dispatch_get_main_queue(), closure)
+}
+
+func executeOnBackgroundThread(closure: () -> ()) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), closure)
+}
 // Extensions
 
 extension CGRect {

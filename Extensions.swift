@@ -57,6 +57,15 @@ extension UIColor {
 }
 
 extension UIImage {
+    convenience init?(url: NSURL) {
+        if let data = NSData(contentsOfURL: url) {
+            self.init(data: data)
+        } else {
+            self.init()
+            return nil
+        }
+    }
+    
     func getColorForPixelAt(point: CGPoint) -> (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var pixelData = CGDataProviderCopyData(CGImageGetDataProvider(self.CGImage))
         var data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)

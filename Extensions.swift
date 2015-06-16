@@ -1,8 +1,18 @@
 import UIKit
+import Foundation
 
-// Helpers
+// Constants
+
+let appVersion = NSBundle.mainBundle().objectForInfoDictionaryKey("CFBundleShortVersionString") as! String
+let appCountry = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode)?.lowercaseString
+let appLanguage = NSBundle.mainBundle().preferredLocalizations.first as! String
 
 let hairline: CGFloat = 1 / UIScreen.mainScreen().scale
+
+let PI = CGFloat(M_PI)
+let PI2 = CGFloat(M_PI_2)
+
+// Helpers
 
 struct ActivityManager {
     static var activitiesCount = 0

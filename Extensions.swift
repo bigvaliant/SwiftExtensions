@@ -52,6 +52,14 @@ func executeOnMainThread(closure: () -> ()) {
 func executeOnBackgroundThread(closure: () -> ()) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), closure)
 }
+
+func radiansToDegrees(radians: CGFloat) -> CGFloat {
+    return radians * 180 / PI
+}
+
+func degreesToRadians(degrees: CGFloat) -> CGFloat {
+    return degrees * PI / 180
+}
 // Extensions
 
 extension CGRect {

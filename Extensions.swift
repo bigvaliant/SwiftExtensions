@@ -31,8 +31,92 @@ func executeAfter(delay: NSTimeInterval, closure: () -> ()) {
 // Extensions
 
 extension CGRect {
-    func getMid() -> CGPoint {
+    var center: CGPoint {
+        return CGPoint(x: origin.x + width * 0.5, y: origin.y + height * 0.5)
+    }
+    
+    var innerCenter: CGPoint {
         return CGPoint(x: width * 0.5, y: height * 0.5)
+    }
+    
+    var x: CGFloat {
+        get {
+            return origin.x
+        }
+        
+        set {
+            origin.x = newValue
+        }
+    }
+    
+    var xCenter: CGFloat {
+        get {
+            return origin.x + size.width * 0.5
+        }
+        
+        set {
+            origin.x = newValue - size.width * 0.5
+        }
+    }
+    
+    var xRight: CGFloat {
+        get {
+            return origin.x + size.width
+        }
+        
+        set {
+            origin.x = newValue - size.width
+        }
+    }
+    
+    var y: CGFloat {
+        get {
+            return origin.y
+        }
+        
+        set {
+            origin.y = newValue
+        }
+    }
+    
+    var yCenter: CGFloat {
+        get {
+            return origin.y + size.height * 0.5
+        }
+        
+        set {
+            origin.y = newValue - size.height * 0.5
+        }
+    }
+    
+    var yBottom: CGFloat {
+        get {
+            return origin.y + size.height
+        }
+        
+        set {
+            origin.y = newValue - size.height
+        }
+    }
+    
+    var width: CGFloat {
+        get {
+            return size.width
+        }
+        
+        set {
+            size.width = newValue
+        }
+    }
+    
+    var height: CGFloat {
+        get {
+            return size.height
+        }
+        
+        set {
+            size.height = newValue
+        }
     }
 }
 
@@ -170,99 +254,44 @@ extension UILabel {
 
 extension UIView {
     var x: CGFloat {
-        get {
-            return frame.origin.x
-        }
-        
-        set {
-            var rect = frame
-            rect.origin.x = newValue
-            frame = rect
-        }
+        get {return frame.x}
+        set {frame.x = newValue}
     }
     
     var xCenter: CGFloat {
-        get {
-            return center.x
-        }
-        
-        set {
-            var point = center
-            point.x = newValue
-            center = point
-        }
+        get {return center.x}
+        set {frame.xCenter = newValue}
     }
     
     var xRight: CGFloat {
-        get {
-            return frame.origin.x + bounds.width
-        }
-        
-        set {
-            var rect = frame
-            rect.origin.x = newValue - bounds.width
-            frame = rect
-        }
+        get {return frame.xRight}
+        set {frame.xRight = newValue}
     }
     
     var y: CGFloat {
-        get {
-            return frame.origin.y
-        }
-        
-        set {
-            var rect = frame
-            rect.origin.y = newValue
-            frame = rect
-        }
+        get {return frame.y}
+        set {frame.y = newValue}
     }
     
     var yCenter: CGFloat {
-        get {
-            return center.y
-        }
-        
-        set {
-            var point = center
-            point.y = newValue
-            center = point
-        }
+        get {return center.y}
+        set {frame.yCenter = newValue}
     }
     
     var yBottom: CGFloat {
-        get {
-            return frame.origin.y + bounds.height
-        }
-        
-        set {
-            var rect = frame
-            rect.origin.y = newValue - bounds.height
-            frame = rect
-        }
+        get {return frame.yBottom}
+        set {frame.yBottom = newValue}
+
     }
     
     var width: CGFloat {
-        get {
-            return bounds.width
-        }
-        
-        set {
-            var rect = frame
-            rect.size.width = newValue
-            frame = rect
-        }
+        get {return bounds.width}
+        set {frame.width = newValue}
     }
     
     var height: CGFloat {
-        get {
-            return bounds.height
-        }
-        
-        set {
-            var rect = frame
-            rect.size.height = newValue
-            frame = rect
-        }
+        get {return bounds.height}
+        set {frame.height = newValue}
     }
     
     func horizontalHairline(bottom: Bool = false) {

@@ -73,6 +73,16 @@ func -(left: CGPoint, right: CGPoint) -> CGPoint {
 
 // Extensions
 
+extension String {
+    var length: Int {
+        return count(self.utf16)
+    }
+    
+    var empty: Bool {
+        return count(self.utf16) == 0
+    }
+}
+
 extension CGRect {
     var center: CGPoint {
         return CGPoint(x: origin.x + width * 0.5, y: origin.y + height * 0.5)

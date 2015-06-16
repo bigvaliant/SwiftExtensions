@@ -83,6 +83,37 @@ extension String {
     }
 }
 
+extension NSDateFormatter {
+    convenience init(dateFormat: String, timeZoneName: String? = nil) {
+        self.init()
+        if timeZoneName != nil {self.timeZone = NSTimeZone(name: timeZoneName!)}
+        self.dateFormat = dateFormat
+    }
+}
+
+extension NSNumberFormatter {
+    convenience init(numberStyle: NSNumberFormatterStyle, maximumFractionDigits: Int? = nil, minimumFractionDigits: Int? = nil) {
+        self.init()
+        self.numberStyle = numberStyle
+        if maximumFractionDigits != nil {self.maximumFractionDigits = maximumFractionDigits!}
+        if minimumFractionDigits != nil {self.minimumFractionDigits = minimumFractionDigits!}
+    }
+}
+
+extension NSTimeInterval {
+    func stringWithDateFormat(format: String) -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.timeZone = NSTimeZone(name: "UTC")
+        dateFormatter.dateFormat = format
+        
+        return dateFormatter.stringFromDate(NSDate(timeIntervalSince1970: self))
+    }
+    
+    var cmTimeValue: CMTime {
+        return CMTimeMake(Int64(self * 25), 25)
+    }
+}
+
 extension CGRect {
     var center: CGPoint {
         return CGPoint(x: origin.x + width * 0.5, y: origin.y + height * 0.5)

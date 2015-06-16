@@ -93,6 +93,14 @@ extension UIImage {
         return img
     }
     
+    var grayScaleImage: UIImage {
+        let imageRect = CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height)
+        let colorSpace = CGColorSpaceCreateDeviceGray()
+        let ctx = CGBitmapContextCreate(nil, Int(self.size.width), Int(self.size.height), 8, 0, colorSpace, CGBitmapInfo.allZeros)
+        CGContextDrawImage(ctx, imageRect, self.CGImage)
+        return UIImage(CGImage: CGBitmapContextCreateImage(ctx))!
+    }
+    
     func scaledToWidth(width: CGFloat) -> UIImage {
         let scale = width / self.size.width
         let height = self.size.height * scale

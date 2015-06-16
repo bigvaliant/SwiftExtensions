@@ -30,6 +30,13 @@ struct ActivityManager {
     }
 }
 
+func randomFileURLWithExtension(fileExtension: String) -> NSURL {
+    let fileName = "/" + NSUUID().UUIDString + "." + fileExtension.stringByReplacingOccurrencesOfString(".", withString: "", options: .CaseInsensitiveSearch)
+    let documentsPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! NSString
+    let exportPath = documentsPath.stringByAppendingString(fileName) as String
+    return NSURL.fileURLWithPath(exportPath)!
+}
+
 func executeAfter(delay: NSTimeInterval, closure: () -> ()) {
     if delay > 0 {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))), dispatch_get_main_queue(), closure)
